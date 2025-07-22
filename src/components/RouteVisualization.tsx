@@ -35,11 +35,11 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
   const [animationOffset, setAnimationOffset] = useState(0);
 
-  // Animação das rotas
+  // Animação das rotas - mais suave
   useEffect(() => {
     const interval = setInterval(() => {
-      setAnimationOffset(prev => (prev + 2) % 20);
-    }, 100);
+      setAnimationOffset(prev => (prev + 0.5) % 20);
+    }, 150);
     return () => clearInterval(interval);
   }, []);
 
@@ -66,10 +66,11 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
     const dy = to.y - from.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     
-    // Para rotas entre CDs, usar curvas mais suaves
-    const curveFactor = isInterCD ? 0.3 : 0.2;
-    const midX = from.x + dx * 0.5 + (Math.random() - 0.5) * distance * curveFactor;
-    const midY = from.y + dy * 0.5 + (Math.random() - 0.5) * distance * curveFactor;
+    // Para rotas entre CDs, usar curvas mais suaves e consistentes
+    const curveFactor = isInterCD ? 0.15 : 0.1;
+    // Usar valores fixos baseados na posição para evitar aleatoriedade
+    const midX = from.x + dx * 0.5 + Math.sin((from.x + to.x) * 0.01) * distance * curveFactor;
+    const midY = from.y + dy * 0.5 + Math.cos((from.y + to.y) * 0.01) * distance * curveFactor;
     
     return `M ${from.x} ${from.y} Q ${midX} ${midY} ${to.x} ${to.y}`;
   };
@@ -135,29 +136,27 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
 
           return (
             <g key={`cd-route-${connection.from}-${connection.to}`}>
-              {/* Rota entre CDs */}
+              {/* Rota entre CDs - linha fixa sem movimentação */}
               <path
                 d={routePath}
                 fill="none"
                 stroke={connection.status === 'active' ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))'}
                 strokeWidth={isHighlighted ? "4" : "2.5"}
                 strokeOpacity={isHighlighted ? 0.9 : 0.6}
-                strokeDasharray={connection.status === 'active' ? "12,6" : "4,4"}
-                strokeDashoffset={connection.status === 'active' ? -animationOffset * 1.5 : 0}
                 className="transition-all duration-300"
                 filter={isHighlighted ? "url(#glow)" : "none"}
               />
               
-              {/* Indicador de fluxo entre CDs */}
+              {/* Indicador de fluxo suave entre CDs */}
               {connection.status === 'active' && (
                 <circle
-                  r="4"
+                  r="3"
                   fill="hsl(var(--primary-glow))"
                   filter="url(#glow)"
-                  opacity="0.8"
+                  opacity="0.7"
                 >
                   <animateMotion
-                    dur="4s"
+                    dur="6s"
                     repeatCount="indefinite"
                     path={routePath}
                   />
@@ -177,28 +176,27 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
 
           return (
             <g key={`route-${point.id}`}>
-              {/* Rota base */}
+              {/* Rota base - linha fixa */}
               <path
                 d={routePath}
                 fill="none"
                 stroke={point.status === 'in_transit' ? 'hsl(var(--route-active))' : 'hsl(var(--muted-foreground))'}
                 strokeWidth={isHighlighted ? "3" : "1.5"}
                 strokeOpacity={isHighlighted ? 0.8 : 0.4}
-                strokeDasharray={point.status === 'in_transit' ? "8,4" : "none"}
-                strokeDashoffset={point.status === 'in_transit' ? -animationOffset : 0}
                 className="transition-all duration-300"
                 filter={isHighlighted ? "url(#glow)" : "none"}
               />
               
-              {/* Indicador de direção */}
+              {/* Indicador de direção suave */}
               {point.status === 'in_transit' && (
                 <circle
-                  r="3"
+                  r="2.5"
                   fill="hsl(var(--route-active))"
                   filter="url(#glow)"
+                  opacity="0.8"
                 >
                   <animateMotion
-                    dur="3s"
+                    dur="5s"
                     repeatCount="indefinite"
                     path={routePath}
                   />
@@ -253,12 +251,12 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
                 onClick={() => onCDSelect(isSelected ? null : cd.id)}
               />
               
-              {/* Label do CD */}
+              {/* Label do CD - posicionado mais longe */}
               <text
                 x={cd.location.x}
-                y={cd.location.y - 35}
+                y={cd.location.y - 45}
                 textAnchor="middle"
-                className="fill-foreground text-xs font-semibold"
+                className="fill-foreground text-sm font-semibold"
                 filter="url(#glow)"
               >
                 {cd.name}
