@@ -61,26 +61,34 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
     }
   };
 
-  const generateRoute = (from: { x: number; y: number }, to: { x: number; y: number }) => {
+  const generateRoute = (from: { x: number; y: number }, to: { x: number; y: number }, isInterCD = false) => {
     const dx = to.x - from.x;
     const dy = to.y - from.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     
-    // Criar uma curva suave
-    const midX = from.x + dx * 0.5 + (Math.random() - 0.5) * distance * 0.2;
-    const midY = from.y + dy * 0.5 + (Math.random() - 0.5) * distance * 0.2;
+    // Para rotas entre CDs, usar curvas mais suaves
+    const curveFactor = isInterCD ? 0.3 : 0.2;
+    const midX = from.x + dx * 0.5 + (Math.random() - 0.5) * distance * curveFactor;
+    const midY = from.y + dy * 0.5 + (Math.random() - 0.5) * distance * curveFactor;
     
     return `M ${from.x} ${from.y} Q ${midX} ${midY} ${to.x} ${to.y}`;
   };
 
+  // Definir conectividade entre CDs (matriz de conexões)
+  const cdConnections = [
+    { from: 'cd1', to: 'cd2', status: 'active' },
+    { from: 'cd1', to: 'cd3', status: 'active' },
+    { from: 'cd2', to: 'cd3', status: 'inactive' },
+  ];
+
   return (
-    <div className="relative w-full h-96 bg-gradient-to-br from-background/50 to-background/80 rounded-lg border border-primary/20 overflow-hidden">
+    <div className="relative w-full h-[500px] bg-gradient-to-br from-background/50 to-background/80 rounded-lg border border-primary/20 overflow-hidden">
       {/* Background Grid */}
       <div className="absolute inset-0 opacity-10">
         <svg width="100%" height="100%" className="absolute inset-0">
           <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5"/>
+            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -115,6 +123,49 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
             <rect x="10" width="10" height="4" fill="transparent"/>
           </pattern>
         </defs>
+
+        {/* Rotas entre CDs */}
+        {cdConnections.map((connection) => {
+          const fromCD = cds.find(cd => cd.id === connection.from);
+          const toCD = cds.find(cd => cd.id === connection.to);
+          if (!fromCD || !toCD) return null;
+
+          const isHighlighted = selectedCD === connection.from || selectedCD === connection.to;
+          const routePath = generateRoute(fromCD.location, toCD.location, true);
+
+          return (
+            <g key={`cd-route-${connection.from}-${connection.to}`}>
+              {/* Rota entre CDs */}
+              <path
+                d={routePath}
+                fill="none"
+                stroke={connection.status === 'active' ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))'}
+                strokeWidth={isHighlighted ? "4" : "2.5"}
+                strokeOpacity={isHighlighted ? 0.9 : 0.6}
+                strokeDasharray={connection.status === 'active' ? "12,6" : "4,4"}
+                strokeDashoffset={connection.status === 'active' ? -animationOffset * 1.5 : 0}
+                className="transition-all duration-300"
+                filter={isHighlighted ? "url(#glow)" : "none"}
+              />
+              
+              {/* Indicador de fluxo entre CDs */}
+              {connection.status === 'active' && (
+                <circle
+                  r="4"
+                  fill="hsl(var(--primary-glow))"
+                  filter="url(#glow)"
+                  opacity="0.8"
+                >
+                  <animateMotion
+                    dur="4s"
+                    repeatCount="indefinite"
+                    path={routePath}
+                  />
+                </circle>
+              )}
+            </g>
+          );
+        })}
 
         {/* Rotas entre CDs e pontos de entrega */}
         {deliveryPoints.map((point) => {
@@ -292,8 +343,12 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
             <span className="text-muted-foreground">Ponto de Entrega</span>
           </div>
           <div className="flex items-center gap-2">
+            <div className="w-4 h-0.5 bg-primary"></div>
+            <span className="text-muted-foreground">Rota entre CDs</span>
+          </div>
+          <div className="flex items-center gap-2">
             <div className="w-4 h-0.5 bg-route-active"></div>
-            <span className="text-muted-foreground">Rota Ativa</span>
+            <span className="text-muted-foreground">Rota de Entrega</span>
           </div>
         </div>
       </div>

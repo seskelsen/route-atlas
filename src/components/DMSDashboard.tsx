@@ -28,18 +28,21 @@ const DMSDashboard = () => {
   
   // Dados mockados para demonstração
   const cds: CDData[] = [
-    { id: 'cd1', name: 'CD São Paulo', location: { x: 300, y: 200 }, status: 'active', capacity: 1000, currentLoad: 850 },
-    { id: 'cd2', name: 'CD Rio de Janeiro', location: { x: 500, y: 300 }, status: 'active', capacity: 800, currentLoad: 600 },
-    { id: 'cd3', name: 'CD Belo Horizonte', location: { x: 400, y: 250 }, status: 'active', capacity: 600, currentLoad: 450 },
+    { id: 'cd1', name: 'CD São Paulo', location: { x: 200, y: 150 }, status: 'active', capacity: 1000, currentLoad: 850 },
+    { id: 'cd2', name: 'CD Rio de Janeiro', location: { x: 600, y: 250 }, status: 'active', capacity: 800, currentLoad: 600 },
+    { id: 'cd3', name: 'CD Belo Horizonte', location: { x: 400, y: 100 }, status: 'active', capacity: 600, currentLoad: 450 },
   ];
 
   const deliveryPoints: DeliveryPoint[] = [
-    { id: 'dp1', name: 'Centro SP', location: { x: 250, y: 180 }, status: 'delivered', assignedCD: 'cd1', priority: 'high' },
-    { id: 'dp2', name: 'Vila Madalena', location: { x: 280, y: 160 }, status: 'in_transit', assignedCD: 'cd1', priority: 'medium' },
-    { id: 'dp3', name: 'Copacabana', location: { x: 520, y: 320 }, status: 'pending', assignedCD: 'cd2', priority: 'high' },
-    { id: 'dp4', name: 'Ipanema', location: { x: 480, y: 280 }, status: 'in_transit', assignedCD: 'cd2', priority: 'low' },
-    { id: 'dp5', name: 'Savassi BH', location: { x: 380, y: 230 }, status: 'delivered', assignedCD: 'cd3', priority: 'medium' },
-    { id: 'dp6', name: 'Centro BH', location: { x: 420, y: 270 }, status: 'pending', assignedCD: 'cd3', priority: 'high' },
+    { id: 'dp1', name: 'Centro SP', location: { x: 120, y: 120 }, status: 'delivered', assignedCD: 'cd1', priority: 'high' },
+    { id: 'dp2', name: 'Vila Madalena', location: { x: 160, y: 200 }, status: 'in_transit', assignedCD: 'cd1', priority: 'medium' },
+    { id: 'dp3', name: 'Zona Sul', location: { x: 80, y: 180 }, status: 'pending', assignedCD: 'cd1', priority: 'low' },
+    { id: 'dp4', name: 'Copacabana', location: { x: 680, y: 220 }, status: 'pending', assignedCD: 'cd2', priority: 'high' },
+    { id: 'dp5', name: 'Ipanema', location: { x: 650, y: 300 }, status: 'in_transit', assignedCD: 'cd2', priority: 'medium' },
+    { id: 'dp6', name: 'Tijuca', location: { x: 720, y: 280 }, status: 'delivered', assignedCD: 'cd2', priority: 'low' },
+    { id: 'dp7', name: 'Savassi BH', location: { x: 360, y: 60 }, status: 'delivered', assignedCD: 'cd3', priority: 'medium' },
+    { id: 'dp8', name: 'Centro BH', location: { x: 440, y: 50 }, status: 'pending', assignedCD: 'cd3', priority: 'high' },
+    { id: 'dp9', name: 'Pampulha', location: { x: 380, y: 140 }, status: 'in_transit', assignedCD: 'cd3', priority: 'medium' },
   ];
 
   const totalDeliveries = deliveryPoints.length;
@@ -72,7 +75,7 @@ const DMSDashboard = () => {
 
         {/* Métricas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-primary/20 hover:border-primary/40 transition-all duration-300">
+          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-primary/20 hover:border-primary/40 transition-all duration-300 animate-fade-in hover-scale">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total de Entregas</p>
@@ -83,7 +86,7 @@ const DMSDashboard = () => {
             </div>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-accent/20 hover:border-accent/40 transition-all duration-300">
+          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-accent/20 hover:border-accent/40 transition-all duration-300 animate-fade-in hover-scale" style={{animationDelay: '0.1s'}}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Entregues</p>
@@ -94,18 +97,18 @@ const DMSDashboard = () => {
             </div>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-route-active/20 hover:border-route-active/40 transition-all duration-300">
+          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-route-active/20 hover:border-route-active/40 transition-all duration-300 animate-fade-in hover-scale" style={{animationDelay: '0.2s'}}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Em Trânsito</p>
                 <p className="text-3xl font-bold text-foreground">{inTransit}</p>
                 <p className="text-xs text-route-active">Ativos agora</p>
               </div>
-              <Truck className="h-12 w-12 text-route-active opacity-80" />
+              <Truck className="h-12 w-12 text-route-active opacity-80 animate-pulse-slow" />
             </div>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-muted/20 hover:border-muted/40 transition-all duration-300">
+          <Card className="p-6 bg-gradient-to-br from-card to-card/80 border-muted/20 hover:border-muted/40 transition-all duration-300 animate-fade-in hover-scale" style={{animationDelay: '0.3s'}}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pendentes</p>
