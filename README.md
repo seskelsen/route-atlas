@@ -1,73 +1,143 @@
-# Welcome to your Lovable project
+# Route Atlas - DMS Dashboard
 
-## Project info
+Uma aplicação moderna de gerenciamento de distribuição em tempo real, desenvolvida com React, TypeScript e shadcn-ui.
 
-**URL**: https://lovable.dev/projects/593cc4e2-7e49-451b-b2a7-fd1ac0e52dfa
+## 📋 Visão Geral
 
-## How can I edit this code?
+O Route Atlas é um Dashboard de Sistema de Gerenciamento de Distribuição (DMS) que oferece visualização em tempo real de:
 
-There are several ways of editing your application.
+- **Centros de Distribuição (CDs)**: Monitoramento de capacidade, carga atual e status
+- **Pontos de Entrega**: Rastreamento de status de entregas (pendente, em trânsito, entregue)
+- **Rotas**: Visualização interativa de conexões entre CDs
+- **Métricas**: Taxa de utilização, entregas concluídas e indicadores de performance
 
-**Use Lovable**
+## 🚀 Tecnologias
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/593cc4e2-7e49-451b-b2a7-fd1ac0e52dfa) and start prompting.
+- **Frontend**: React 18, TypeScript
+- **Build Tool**: Vite
+- **UI Components**: shadcn-ui, Radix UI
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Data Management**: React Query (TanStack Query)
+- **Routing**: React Router DOM
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📦 Instalação
 
-**Use your preferred IDE**
+### Pré-requisitos
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 18+ e npm (recomendado: [instale com nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Passos de Instalação
 
-Follow these steps:
+```bash
+# 1. Clone o repositório
+git clone https://github.com/seskelsen/route-atlas.git
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 2. Navegue para o diretório do projeto
+cd route-atlas
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# 3. Instale as dependências
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+O aplicativo estará disponível em `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🛠 Scripts Disponíveis
 
-**Use GitHub Codespaces**
+```bash
+# Desenvolvimento
+npm run dev          # Inicia servidor de desenvolvimento
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Build
+npm run build        # Build para produção
+npm run build:dev    # Build em modo desenvolvimento
 
-## What technologies are used for this project?
+# Linting
+npm run lint         # Executa ESLint
 
-This project is built with:
+# Preview
+npm run preview      # Preview do build de produção
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📊 Estrutura de Dados
 
-## How can I deploy this project?
+O sistema utiliza arquivos JSON para armazenar dados que são carregados automaticamente:
 
-Simply open [Lovable](https://lovable.dev/projects/593cc4e2-7e49-451b-b2a7-fd1ac0e52dfa) and click on Share -> Publish.
+- `src/data/cds.json` - Centros de Distribuição
+- `src/data/delivery-points.json` - Pontos de Entrega
+- `src/data/cd-connections.json` - Conexões entre CDs
 
-## Can I connect a custom domain to my Lovable project?
+### Atualização Automática
 
-Yes, you can!
+O sistema monitora os arquivos JSON automaticamente a cada 30 segundos e atualiza a visualização em tempo real.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🎯 Funcionalidades
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Dashboard Principal
+- **Métricas em Tempo Real**: Total de entregas, entregues, em trânsito e capacidade dos CDs
+- **Visualização Interativa**: Mapa SVG com CDs e pontos de entrega
+- **Seleção de CD**: Clique em um CD para filtrar informações
+- **Status das Entregas**: Lista detalhada com status e prioridades
+
+### Centros de Distribuição
+- Monitoramento de capacidade e carga atual
+- Indicadores visuais de utilização
+- Status ativo/inativo
+- Seleção interativa para filtragem
+
+### Sistema de Entregas
+- Rastreamento por status (pendente, em trânsito, entregue)
+- Níveis de prioridade (baixa, média, alta)
+- Atribuição automática a CDs
+- Métricas de performance
+
+## 📁 Estrutura do Projeto
+
+```
+route-atlas/
+├── src/
+│   ├── components/          # Componentes React
+│   │   ├── ui/             # Componentes UI (shadcn)
+│   │   ├── DMSDashboard.tsx # Dashboard principal
+│   │   └── RouteVisualization.tsx # Visualização de rotas
+│   ├── data/               # Arquivos JSON de dados
+│   ├── hooks/              # Custom hooks
+│   ├── lib/                # Utilitários
+│   ├── pages/              # Páginas da aplicação
+│   └── App.tsx             # Componente principal
+├── public/                 # Arquivos estáticos
+└── docs/                   # Documentação adicional
+```
+
+## 📖 Documentação
+
+- [Guia do Usuário](docs/USER_GUIDE.md) - Como usar o dashboard
+- [API e Integração](docs/API.md) - Integração com sistemas externos
+- [Arquitetura](docs/ARCHITECTURE.md) - Visão técnica do sistema
+- [Configuração](docs/CONFIGURATION.md) - Personalização e configuração
+- [Deploy](docs/DEPLOYMENT.md) - Instruções de deployment
+- [Troubleshooting](docs/TROUBLESHOOTING.md) - Resolução de problemas
+- [Contribuição](docs/CONTRIBUTING.md) - Guia para desenvolvedores
+
+## 🔧 Configuração
+
+Para personalizar o sistema, consulte o [Guia de Configuração](docs/CONFIGURATION.md).
+
+## 🚀 Deploy
+
+Para instruções detalhadas de deployment, consulte o [Guia de Deploy](docs/DEPLOYMENT.md).
+
+## 🤝 Contribuição
+
+Consulte o [Guia de Contribuição](docs/CONTRIBUTING.md) para informações sobre como contribuir com o projeto.
+
+## 📝 Changelog
+
+Consulte [CHANGELOG.md](CHANGELOG.md) para ver as alterações recentes.
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
