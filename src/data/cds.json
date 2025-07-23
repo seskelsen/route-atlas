@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cd1",
+    "name": "CD São Paulo",
+    "location": { "x": 150, "y": 200 },
+    "status": "active",
+    "capacity": 1000,
+    "currentLoad": 750
+  },
+  {
+    "id": "cd2",
+    "name": "CD Rio de Janeiro",
+    "location": { "x": 400, "y": 300 },
+    "status": "active",
+    "capacity": 800,
+    "currentLoad": 600
+  },
+  {
+    "id": "cd3",
+    "name": "CD Belo Horizonte",
+    "location": { "x": 300, "y": 150 },
+    "status": "active",
+    "capacity": 600,
+    "currentLoad": 400
+  }
+]

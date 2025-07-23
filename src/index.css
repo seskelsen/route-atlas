@@ -30,6 +30,9 @@ All colors MUST be HSL.
     --accent: 142 76% 36%;
     --accent-foreground: 210 40% 98%;
     --accent-glow: 142 100% 60%;
+    
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;

@@ -18,9 +18,16 @@ interface DeliveryPoint {
   priority: 'low' | 'medium' | 'high';
 }
 
+interface CDConnection {
+  from: string;
+  to: string;
+  status: 'active' | 'inactive';
+}
+
 interface RouteVisualizationProps {
   cds: CDData[];
   deliveryPoints: DeliveryPoint[];
+  cdConnections: CDConnection[];
   selectedCD: string | null;
   onCDSelect: (cdId: string | null) => void;
 }
@@ -28,6 +35,7 @@ interface RouteVisualizationProps {
 export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
   cds,
   deliveryPoints,
+  cdConnections,
   selectedCD,
   onCDSelect
 }) => {
@@ -75,12 +83,7 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
     return `M ${from.x} ${from.y} Q ${midX} ${midY} ${to.x} ${to.y}`;
   };
 
-  // Definir conectividade entre CDs (matriz de conexões)
-  const cdConnections = [
-    { from: 'cd1', to: 'cd2', status: 'active' },
-    { from: 'cd1', to: 'cd3', status: 'active' },
-    { from: 'cd2', to: 'cd3', status: 'inactive' },
-  ];
+  // As conexões entre CDs agora vêm via props dos arquivos JSON
 
   return (
     <div className="relative w-full h-[500px] bg-gradient-to-br from-background/50 to-background/80 rounded-lg border border-primary/20 overflow-hidden">

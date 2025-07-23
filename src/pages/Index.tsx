@@ -1,4 +1,4 @@
-import DMSDashboard from '@/components/DMSDashboard';
+import { DMSDashboard } from '@/components/DMSDashboard';
 
 const Index = () => {
   return <DMSDashboard />;
