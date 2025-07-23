@@ -25,7 +25,7 @@ export const DMSDashboard: React.FC = () => {
   const [selectedCD, setSelectedCD] = useState<string | null>(null);
   
   // Carrega dados dos arquivos JSON automaticamente
-  const { cds, deliveryPoints, cdConnections, isLoading, error } = useDataLoader(5000);
+  const { cds, deliveryPoints, cdConnections, isLoading, error } = useDataLoader(30000); // 30 segundos
 
   // Cálculo das métricas
   const totalDeliveries = deliveryPoints.length;
