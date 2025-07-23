@@ -13,5 +13,10 @@
     "from": "cd2",
     "to": "cd3",
     "status": "inactive"
+  },
+  {
+    "from": "cd2",
+    "to": "cd4",
+    "status": "active"
   }
 ]

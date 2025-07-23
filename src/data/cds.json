@@ -22,5 +22,13 @@
     "status": "active",
     "capacity": 600,
     "currentLoad": 400
+  },
+  {
+    "id": "cd4",
+    "name": "CD Recife",
+    "location": { "x": 600, "y": 250 },
+    "status": "active",
+    "capacity": 900,
+    "currentLoad": 300
   }
 ]
