@@ -30,5 +30,13 @@
     "status": "active",
     "capacity": 900,
     "currentLoad": 300
+  },
+  {
+    "id": "cd5",
+    "name": "CD Brasília",
+    "location": { "x": 300, "y": 450 },
+    "status": "active",
+    "capacity": 900,
+    "currentLoad": 300
   }
 ]
