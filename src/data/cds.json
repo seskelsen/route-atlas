@@ -38,5 +38,13 @@
     "status": "active",
     "capacity": 900,
     "currentLoad": 300
+  },
+  {
+    "id": "cd6",
+    "name": "CD Dourados",
+    "location": { "x": 300, "y": 300 },
+    "status": "active",
+    "capacity": 900,
+    "currentLoad": 300
   }
 ]
