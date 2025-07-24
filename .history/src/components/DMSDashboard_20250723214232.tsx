@@ -110,6 +110,12 @@ export const DMSDashboard: React.FC = () => {
               <Wifi className="w-4 h-4 text-success" />
               <span className="text-sm text-success font-medium">Online</span>
             </div>
+            {hasUnsavedChanges && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-warning/10 rounded-lg">
+                <Save className="w-4 h-4 text-warning" />
+                <span className="text-sm text-warning font-medium">Alterações não salvas</span>
+              </div>
+            )}
             <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
               <RefreshCw className="w-4 h-4 mr-2" />
               Atualizar

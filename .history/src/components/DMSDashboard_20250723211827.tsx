@@ -26,21 +26,27 @@ import {
 
 export const DMSDashboard: React.FC = () => {
   const [selectedCD, setSelectedCD] = useState<string | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   
   // Carrega dados dos arquivos JSON automaticamente
-  const { cds, deliveryPoints, cdConnections, isLoading, error, updatePositions } = useDataLoader(30000); // 30 segundos
+  const { cds, deliveryPoints, cdConnections, isLoading, error } = useDataLoader(30000); // 30 segundos
   
   // Hook para salvar posições
-  const { resetPositions } = usePositionSaver();
+  const { savePositions, resetPositions } = usePositionSaver();
 
   // Função para salvar as novas posições
   const handleUpdateLocations = async (updatedCDs: any[], updatedDeliveryPoints: any[]) => {
-    updatePositions(updatedCDs, updatedDeliveryPoints);
+    setHasUnsavedChanges(true);
+    const success = await savePositions(updatedCDs, updatedDeliveryPoints);
+    if (success) {
+      setHasUnsavedChanges(false);
+    }
   };
 
   // Função para resetar posições
   const handleResetPositions = () => {
     resetPositions();
+    setHasUnsavedChanges(false);
     window.location.reload(); // Recarrega para aplicar as posições padrão
   };
 
@@ -110,6 +116,12 @@ export const DMSDashboard: React.FC = () => {
               <Wifi className="w-4 h-4 text-success" />
               <span className="text-sm text-success font-medium">Online</span>
             </div>
+            {hasUnsavedChanges && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-warning/10 rounded-lg">
+                <Save className="w-4 h-4 text-warning" />
+                <span className="text-sm text-warning font-medium">Alterações não salvas</span>
+              </div>
+            )}
             <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
               <RefreshCw className="w-4 h-4 mr-2" />
               Atualizar
@@ -198,14 +210,9 @@ export const DMSDashboard: React.FC = () => {
             <Card className="bg-gradient-to-br from-card to-card/80 border-primary/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-2xl font-semibold text-foreground">
-                      Visualização de Rotas em Tempo Real
-                    </CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Arraste os CDs e pontos de entrega para reorganizar a visualização
-                    </p>
-                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">
+                    Visualização de Rotas em Tempo Real
+                  </CardTitle>
                   <div className="flex gap-2">
                     <Badge variant="outline" className="border-cd-primary text-cd-primary">
                       CDs: {cds.length}

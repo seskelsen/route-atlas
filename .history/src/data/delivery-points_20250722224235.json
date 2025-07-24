@@ -1,0 +1,106 @@
+[
+  {
+    "id": "delivery1",
+    "name": "Loja Centro",
+    "location": { "x": 180, "y": 150 },
+    "status": "delivered",
+    "assignedCD": "cd1",
+    "priority": "high"
+  },
+  {
+    "id": "delivery2",
+    "name": "Farmácia Norte",
+    "location": { "x": 300, "y": 250 },
+    "status": "in_transit",
+    "assignedCD": "cd1",
+    "priority": "medium"
+  },
+  {
+    "id": "delivery3",
+    "name": "Supermercado Sul",
+    "location": { "x": 450, "y": 350 },
+    "status": "pending",
+    "assignedCD": "cd2",
+    "priority": "low"
+  },
+  {
+    "id": "delivery4",
+    "name": "Posto Oeste",
+    "location": { "x": 100, "y": 300 },
+    "status": "in_transit",
+    "assignedCD": "cd1",
+    "priority": "high"
+  },
+  {
+    "id": "delivery5",
+    "name": "Loja Shopping",
+    "location": { "x": 380, "y": 200 },
+    "status": "delivered",
+    "assignedCD": "cd2",
+    "priority": "medium"
+  },
+  {
+    "id": "delivery6",
+    "name": "Clínica Central",
+    "location": { "x": 250, "y": 100 },
+    "status": "pending",
+    "assignedCD": "cd3",
+    "priority": "high"
+  },
+  {
+    "id": "delivery7",
+    "name": "Padaria Esquina",
+    "location": { "x": 350, "y": 120 },
+    "status": "in_transit",
+    "assignedCD": "cd3",
+    "priority": "low"
+  },
+  {
+    "id": "delivery8",
+    "name": "Restaurante Downtown",
+    "location": { "x": 200, "y": 280 },
+    "status": "delivered",
+    "assignedCD": "cd1",
+    "priority": "medium"
+  },
+  {
+    "id": "delivery9",
+    "name": "Mercadinho Boa Viagem",
+    "location": { "x": 580, "y": 270 },
+    "status": "pending",
+    "assignedCD": "cd4",
+    "priority": "high"
+  },
+  {
+    "id": "delivery10",
+    "name": "Farmácia Derby",
+    "location": { "x": 610, "y": 230 },
+    "status": "in_transit",
+    "assignedCD": "cd4",
+    "priority": "medium"
+  },
+  {
+    "id": "delivery11",
+    "name": "Posto Pina",
+    "location": { "x": 620, "y": 280 },
+    "status": "pending",
+    "assignedCD": "cd4",
+    "priority": "low"
+  },
+  {
+    "id": "delivery12",
+    "name": "Loja Casa Forte",
+    "location": { "x": 590, "y": 220 },
+    "status": "delivered",
+    "assignedCD": "cd4",
+    "priority": "high"
+  },
+  {
+    "id": "delivery13",
+    "name": "Clínica Graças",
+    "location": { "x": 570, "y": 240 },
+    "status": "in_transit",
+    "assignedCD": "cd4",
+    "priority": "medium"
+  }
+]

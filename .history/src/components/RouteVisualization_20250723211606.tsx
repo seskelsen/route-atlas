@@ -210,15 +210,7 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         </svg>
       </div>
 
-      <svg 
-        ref={svgRef} 
-        width="100%" 
-        height="100%" 
-        className="relative z-10"
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp} // Para casos onde o mouse sai da área
-      >
+      <svg ref={svgRef} width="100%" height="100%" className="relative z-10">
         <defs>
           {/* Gradientes para diferentes elementos */}
           <radialGradient id="cdGradient" cx="50%" cy="50%" r="50%">
@@ -373,6 +365,7 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
                 className={`transition-all duration-300 ${isDragging ? 'cursor-grabbing' : 'cursor-grab hover:r-20'}`}
                 onClick={() => !isDragging && onCDSelect(isSelected ? null : cd.id)}
                 onMouseDown={(e) => handleMouseDown('cd', cd.id, e)}
+                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
               />
               
               {/* Label do CD - posicionado mais longe */}
@@ -454,29 +447,17 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         })}
       </svg>
 
-      {/* Indicador de drag and drop */}
-      {dragState.isDragging && (
-        <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm rounded-lg p-2 border border-primary/40">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary-foreground animate-pulse"></div>
-            <span className="text-xs text-primary-foreground font-medium">
-              Arrastando {dragState.elementType === 'cd' ? 'CD' : 'Entrega'}
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Legenda atualizada */}
+      {/* Legenda */}
       <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20">
         <div className="text-xs text-foreground font-semibold mb-2">Legenda</div>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded-full bg-cd-primary"></div>
-            <span className="text-muted-foreground">Centro de Distribuição (arrastar)</span>
+            <span className="text-muted-foreground">Centro de Distribuição</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-0 h-0 border-l-2 border-r-2 border-b-4 border-l-transparent border-r-transparent border-b-delivery-primary"></div>
-            <span className="text-muted-foreground">Ponto de Entrega (arrastar)</span>
+            <span className="text-muted-foreground">Ponto de Entrega</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-0.5 bg-primary"></div>

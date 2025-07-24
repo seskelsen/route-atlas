@@ -1,0 +1,32 @@
+[
+  {
+    "from": "cd1",
+    "to": "cd2",
+    "status": "active"
+  },
+  {
+    "from": "cd1",
+    "to": "cd3",
+    "status": "active"
+  },
+  {
+    "from": "cd2",
+    "to": "cd3",
+    "status": "inactive"
+  },
+  {
+    "from": "cd1",
+    "to": "cd4",
+    "status": "active"
+  },
+  {
+    "from": "cd2",
+    "to": "cd4",
+    "status": "active"
+  },
+  {
+    "from": "cd3",
+    "to": "cd4",
+    "status": "inactive"
+  }
+]

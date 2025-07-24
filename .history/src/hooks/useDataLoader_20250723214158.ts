@@ -90,18 +90,11 @@ export const useDataLoader = (refreshInterval = 30000): DashboardData => {
         throw new Error('Erro ao carregar dados dos arquivos JSON');
       }
 
-      const [originalCDs, originalDeliveryPoints, cdConnections] = await Promise.all([
+      const [cds, deliveryPoints, cdConnections] = await Promise.all([
         cdsResponse.json(),
         deliveryPointsResponse.json(),
         connectionsResponse.json()
       ]);
-
-      // Verifica se há posições salvas localmente
-      const savedPositions = loadSavedPositions();
-      
-      // Usa posições salvas se existirem, senão usa as originais
-      const cds = savedPositions.cds || originalCDs;
-      const deliveryPoints = savedPositions.deliveryPoints || originalDeliveryPoints;
 
       setData({
         cds,
@@ -125,18 +118,11 @@ export const useDataLoader = (refreshInterval = 30000): DashboardData => {
     // Carrega dados inicialmente
     loadData();
 
-    // Configura atualização automática apenas se não houver mudanças locais
-    const interval = setInterval(() => {
-      if (!hasLocalChanges) {
-        loadData();
-      }
-    }, refreshInterval);
+    // Configura atualização automática
+    const interval = setInterval(loadData, refreshInterval);
 
     return () => clearInterval(interval);
-  }, [refreshInterval, hasLocalChanges, loadSavedPositions]);
+  }, [refreshInterval]);
 
-  return {
-    ...data,
-    updatePositions
-  };
+  return data;
 };

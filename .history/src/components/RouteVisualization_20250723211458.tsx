@@ -210,15 +210,7 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         </svg>
       </div>
 
-      <svg 
-        ref={svgRef} 
-        width="100%" 
-        height="100%" 
-        className="relative z-10"
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp} // Para casos onde o mouse sai da área
-      >
+      <svg ref={svgRef} width="100%" height="100%" className="relative z-10">
         <defs>
           {/* Gradientes para diferentes elementos */}
           <radialGradient id="cdGradient" cx="50%" cy="50%" r="50%">
@@ -249,8 +241,8 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
 
         {/* Rotas entre CDs */}
         {cdConnections.map((connection) => {
-          const fromCD = localCDs.find(cd => cd.id === connection.from);
-          const toCD = localCDs.find(cd => cd.id === connection.to);
+          const fromCD = cds.find(cd => cd.id === connection.from);
+          const toCD = cds.find(cd => cd.id === connection.to);
           if (!fromCD || !toCD) return null;
 
           const isHighlighted = selectedCD === connection.from || selectedCD === connection.to;
@@ -289,8 +281,8 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         })}
 
         {/* Rotas entre CDs e pontos de entrega */}
-        {localDeliveryPoints.map((point) => {
-          const assignedCD = localCDs.find(cd => cd.id === point.assignedCD);
+        {deliveryPoints.map((point) => {
+          const assignedCD = cds.find(cd => cd.id === point.assignedCD);
           if (!assignedCD) return null;
 
           const isHighlighted = selectedCD === point.assignedCD || hoveredPoint === point.id;
@@ -329,9 +321,8 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         })}
 
         {/* Centros de Distribuição (Círculos) */}
-        {localCDs.map((cd) => {
+        {cds.map((cd) => {
           const isSelected = selectedCD === cd.id;
-          const isDragging = dragState.elementType === 'cd' && dragState.elementId === cd.id;
           const loadPercentage = (cd.currentLoad / cd.capacity) * 100;
           
           return (
@@ -365,14 +356,13 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
               <circle
                 cx={cd.location.x}
                 cy={cd.location.y}
-                r={isSelected || isDragging ? "22" : "18"}
+                r={isSelected ? "22" : "18"}
                 fill="url(#cdGradient)"
                 stroke="hsl(var(--cd-primary))"
-                strokeWidth={isSelected || isDragging ? "3" : "2"}
+                strokeWidth={isSelected ? "3" : "2"}
                 filter="url(#glow)"
-                className={`transition-all duration-300 ${isDragging ? 'cursor-grabbing' : 'cursor-grab hover:r-20'}`}
-                onClick={() => !isDragging && onCDSelect(isSelected ? null : cd.id)}
-                onMouseDown={(e) => handleMouseDown('cd', cd.id, e)}
+                className="cursor-pointer transition-all duration-300 hover:r-20"
+                onClick={() => onCDSelect(isSelected ? null : cd.id)}
               />
               
               {/* Label do CD - posicionado mais longe */}
@@ -399,11 +389,10 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         })}
 
         {/* Pontos de Entrega (Triângulos) */}
-        {localDeliveryPoints.map((point) => {
+        {deliveryPoints.map((point) => {
           const isHovered = hoveredPoint === point.id;
           const isFromSelectedCD = selectedCD === point.assignedCD;
-          const isDragging = dragState.elementType === 'delivery' && dragState.elementId === point.id;
-          const triangleSize = isHovered || isDragging ? 10 : 8;
+          const triangleSize = isHovered ? 10 : 8;
           
           // Criar um triângulo apontando para baixo
           const trianglePath = `M ${point.location.x} ${point.location.y - triangleSize} 
@@ -413,7 +402,7 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
           return (
             <g key={point.id}>
               {/* Halo para pontos em destaque */}
-              {(isHovered || isFromSelectedCD || isDragging) && (
+              {(isHovered || isFromSelectedCD) && (
                 <circle
                   cx={point.location.x}
                   cy={point.location.y}
@@ -432,11 +421,10 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
                 fill={getStatusColor(point.status)}
                 stroke={getPriorityColor(point.priority)}
                 strokeWidth="2"
-                filter={isHovered || isFromSelectedCD || isDragging ? "url(#glow)" : "none"}
-                className={`transition-all duration-300 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-                onMouseEnter={() => !isDragging && setHoveredPoint(point.id)}
-                onMouseLeave={() => !isDragging && setHoveredPoint(null)}
-                onMouseDown={(e) => handleMouseDown('delivery', point.id, e)}
+                filter={isHovered || isFromSelectedCD ? "url(#glow)" : "none"}
+                className="cursor-pointer transition-all duration-300"
+                onMouseEnter={() => setHoveredPoint(point.id)}
+                onMouseLeave={() => setHoveredPoint(null)}
               />
               
               {/* Label do ponto */}
@@ -444,8 +432,8 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
                 x={point.location.x}
                 y={point.location.y + 20}
                 textAnchor="middle"
-                className={`fill-foreground text-xs transition-opacity duration-300 ${isHovered || isFromSelectedCD || isDragging ? 'opacity-100' : 'opacity-70'}`}
-                pointerEvents="none"
+                className="fill-foreground text-xs"
+                style={{ opacity: isHovered || isFromSelectedCD ? 1 : 0.7 }}
               >
                 {point.name}
               </text>
@@ -454,29 +442,17 @@ export const RouteVisualization: React.FC<RouteVisualizationProps> = ({
         })}
       </svg>
 
-      {/* Indicador de drag and drop */}
-      {dragState.isDragging && (
-        <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm rounded-lg p-2 border border-primary/40">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary-foreground animate-pulse"></div>
-            <span className="text-xs text-primary-foreground font-medium">
-              Arrastando {dragState.elementType === 'cd' ? 'CD' : 'Entrega'}
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Legenda atualizada */}
+      {/* Legenda */}
       <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20">
         <div className="text-xs text-foreground font-semibold mb-2">Legenda</div>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded-full bg-cd-primary"></div>
-            <span className="text-muted-foreground">Centro de Distribuição (arrastar)</span>
+            <span className="text-muted-foreground">Centro de Distribuição</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-0 h-0 border-l-2 border-r-2 border-b-4 border-l-transparent border-r-transparent border-b-delivery-primary"></div>
-            <span className="text-muted-foreground">Ponto de Entrega (arrastar)</span>
+            <span className="text-muted-foreground">Ponto de Entrega</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-0.5 bg-primary"></div>

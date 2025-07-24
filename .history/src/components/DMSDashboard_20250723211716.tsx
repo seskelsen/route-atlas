@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { RouteVisualization } from './RouteVisualization';
 import { useDataLoader } from '@/hooks/useDataLoader';
-import { usePositionSaver } from '@/hooks/usePositionSaver';
 import { 
   Package, 
   Truck, 
@@ -19,29 +18,20 @@ import {
   Loader,
   Database,
   Wifi,
-  WifiOff,
-  Save,
-  RotateCcw
+  WifiOff
 } from 'lucide-react';
 
 export const DMSDashboard: React.FC = () => {
   const [selectedCD, setSelectedCD] = useState<string | null>(null);
   
   // Carrega dados dos arquivos JSON automaticamente
-  const { cds, deliveryPoints, cdConnections, isLoading, error, updatePositions } = useDataLoader(30000); // 30 segundos
-  
-  // Hook para salvar posições
-  const { resetPositions } = usePositionSaver();
+  const { cds, deliveryPoints, cdConnections, isLoading, error } = useDataLoader(30000); // 30 segundos
 
-  // Função para salvar as novas posições
-  const handleUpdateLocations = async (updatedCDs: any[], updatedDeliveryPoints: any[]) => {
-    updatePositions(updatedCDs, updatedDeliveryPoints);
-  };
-
-  // Função para resetar posições
-  const handleResetPositions = () => {
-    resetPositions();
-    window.location.reload(); // Recarrega para aplicar as posições padrão
+  // Função para salvar as novas posições (simulação - em produção seria uma API)
+  const handleUpdateLocations = (updatedCDs: any[], updatedDeliveryPoints: any[]) => {
+    console.log('Posições atualizadas:', { updatedCDs, updatedDeliveryPoints });
+    // Em produção, aqui você salvaria as novas posições em uma API ou arquivo
+    // Por enquanto, apenas logamos as mudanças
   };
 
   // Cálculo das métricas
@@ -113,10 +103,6 @@ export const DMSDashboard: React.FC = () => {
             <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
               <RefreshCw className="w-4 h-4 mr-2" />
               Atualizar
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleResetPositions}>
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Resetar Posições
             </Button>
             <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
@@ -198,14 +184,9 @@ export const DMSDashboard: React.FC = () => {
             <Card className="bg-gradient-to-br from-card to-card/80 border-primary/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-2xl font-semibold text-foreground">
-                      Visualização de Rotas em Tempo Real
-                    </CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Arraste os CDs e pontos de entrega para reorganizar a visualização
-                    </p>
-                  </div>
+                  <CardTitle className="text-2xl font-semibold text-foreground">
+                    Visualização de Rotas em Tempo Real
+                  </CardTitle>
                   <div className="flex gap-2">
                     <Badge variant="outline" className="border-cd-primary text-cd-primary">
                       CDs: {cds.length}
@@ -223,7 +204,6 @@ export const DMSDashboard: React.FC = () => {
                   cdConnections={cdConnections}
                   selectedCD={selectedCD}
                   onCDSelect={setSelectedCD}
-                  onUpdateLocations={handleUpdateLocations}
                 />
               </CardContent>
             </Card>
