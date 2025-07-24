@@ -10,6 +10,13 @@ O Route Atlas é um sistema de gerenciamento de distribuição que oferece monit
 2. Navegue para a URL do sistema (ex: `http://localhost:8080` para desenvolvimento)
 3. O dashboard será carregado automaticamente
 
+
+## Sincronização Automática de Dados
+
+Sempre que você alterar os arquivos JSON de dados (ex: adicionar um novo CD em cds.json), o dashboard irá refletir automaticamente essas mudanças, sem necessidade de limpar manualmente o localStorage do navegador.
+
+Se você personalizar posições ou estados pelo dashboard, essas alterações continuam sendo salvas localmente, mas serão sobrescritas caso a estrutura dos dados JSON mude (ex: novo CD adicionado ou removido).
+
 ## Interface Principal
 
 ### Header do Dashboard

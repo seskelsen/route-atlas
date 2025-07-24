@@ -6,7 +6,10 @@ Este documento descreve as opções de configuração disponíveis para customiz
 
 ## Configurações de Dados
 
-### 1. Frequência de Atualização
+
+### Sincronização Automática entre JSON e LocalStorage
+
+O sistema detecta automaticamente mudanças nos arquivos JSON (ex: adição/remoção de CDs ou pontos de entrega) e sincroniza o localStorage para garantir que o dashboard sempre reflita os dados mais recentes, sem necessidade de intervenção manual.
 
 Por padrão, os dados são atualizados a cada 30 segundos. Para modificar:
 

@@ -53,7 +53,11 @@ src/data/
 ]
 ```
 
-#### Validações
+#### Validações e Sincronização
+
+- O sistema sempre prioriza os dados dos arquivos JSON como fonte de verdade.
+- Se a estrutura dos dados JSON mudar (ex: novo CD adicionado), o localStorage será automaticamente sincronizado para refletir as alterações.
+- Personalizações feitas pelo usuário (ex: arrastar CDs) são mantidas enquanto a estrutura dos dados não muda.
 
 - `id`: Deve ser único entre todos os CDs
 - `location.x`: Entre 0 e 600 (largura do SVG)
