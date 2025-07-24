@@ -1,5 +1,6 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "route-atlas",
+  "description": "Route Atlas - DMS Dashboard: Uma aplicação moderna de gerenciamento de distribuição em tempo real, desenvolvida com React, TypeScript e shadcn-ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussões da Comunidade
+    url: https://github.com/seskelsen/route-atlas/discussions
+    about: Para perguntas gerais e discussões sobre o projeto
+  - name: 🛡️ Relatório de Segurança
+    url: mailto:seskelsen@gmail.com
+    about: Para reportar vulnerabilidades de segurança (não use issues públicas)
