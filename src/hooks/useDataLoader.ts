@@ -96,12 +96,31 @@ export const useDataLoader = (refreshInterval = 30000): DashboardData => {
         connectionsResponse.json()
       ]);
 
+
       // Verifica se há posições salvas localmente
       const savedPositions = loadSavedPositions();
-      
-      // Usa posições salvas se existirem, senão usa as originais
-      const cds = savedPositions.cds || originalCDs;
-      const deliveryPoints = savedPositions.deliveryPoints || originalDeliveryPoints;
+
+      // Se o JSON mudou (ex: quantidade de CDs diferente), sobrescreve o localStorage
+      let cds = originalCDs;
+      let deliveryPoints = originalDeliveryPoints;
+      let shouldUpdateStorage = false;
+
+      if (savedPositions.cds && Array.isArray(savedPositions.cds) && savedPositions.cds.length === originalCDs.length) {
+        cds = savedPositions.cds;
+      } else {
+        shouldUpdateStorage = true;
+      }
+
+      if (savedPositions.deliveryPoints && Array.isArray(savedPositions.deliveryPoints) && savedPositions.deliveryPoints.length === originalDeliveryPoints.length) {
+        deliveryPoints = savedPositions.deliveryPoints;
+      } else {
+        shouldUpdateStorage = true;
+      }
+
+      if (shouldUpdateStorage) {
+        localStorage.setItem('route-atlas-cds', JSON.stringify(originalCDs));
+        localStorage.setItem('route-atlas-delivery-points', JSON.stringify(originalDeliveryPoints));
+      }
 
       setData({
         cds,
